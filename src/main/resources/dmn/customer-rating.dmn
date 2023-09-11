@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_090t117" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.14.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <decision id="Decision_Type" name="Is individual entrepreneur">
+    <decisionTable id="DecisionTable_1aq79g4" hitPolicy="FIRST">
+      <input id="InputClause_0q438a1" label="Type">
+        <inputExpression id="LiteralExpression_14pe51l" typeRef="string">
+          <text>type</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_10dovni" label="Result" name="type" typeRef="boolean" />
+      <rule id="DecisionRule_04olnns">
+        <inputEntry id="UnaryTests_0heeopm">
+          <text>string length(?) = 12</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ghvb67">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1bon8iq">
+        <inputEntry id="UnaryTests_1gksodg">
+          <text>not(string length(?) = 12)</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1q2m9mq">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_Region" name="Is restricted region">
+    <decisionTable id="DecisionTable_0ke4zrn" hitPolicy="FIRST" biodi:annotationsWidth="400">
+      <input id="InputClause_0mdmc98" label="Region">
+        <inputExpression id="LiteralExpression_0cily8g" typeRef="integer">
+          <text>region</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_158sqg0" label="Result" name="region" typeRef="boolean" />
+      <rule id="DecisionRule_0only2d">
+        <inputEntry id="UnaryTests_0o10r73">
+          <text>24</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_015dhs2">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1cydpzx">
+        <inputEntry id="UnaryTests_0q1iads">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1wxes96">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_Result" name="Result">
+    <variable id="InformationItem_1uedfzg" name="finalResult" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_1wk1zog">
+      <requiredDecision href="#Decision_Region" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0ltu2ms">
+      <requiredDecision href="#Decision_Type" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0lndadg">
+      <requiredDecision href="#Decision_Capital" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1ktzyfn">
+      <requiredDecision href="#Decision_Resident" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_1vgg5s9">
+      <text>type and region and capital and resident</text>
+    </literalExpression>
+  </decision>
+  <decision id="Decision_Capital" name="Is capital less than 5000000">
+    <decisionTable id="DecisionTable_09txeyn" hitPolicy="FIRST">
+      <input id="InputClause_1jbnk6r" label="Capital">
+        <inputExpression id="LiteralExpression_0jjaozc" typeRef="double">
+          <text>capital</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_10fqkyu" label="Result" name="capital" typeRef="boolean" />
+      <rule id="DecisionRule_1dv2kjw">
+        <inputEntry id="UnaryTests_022aufi">
+          <text>&lt; 5000000</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0v3r0kw">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1citbk0">
+        <inputEntry id="UnaryTests_0wy6s76">
+          <text>&gt; 5000000</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0b1mzqo">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_Resident" name="Is resident">
+    <decisionTable id="DecisionTable_1hhupxw" hitPolicy="FIRST">
+      <input id="InputClause_0h373nl">
+        <inputExpression id="LiteralExpression_0u3ry74" typeRef="string">
+          <text>resident</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_0saxizx" name="resident" typeRef="boolean" />
+      <rule id="DecisionRule_12a4562">
+        <inputEntry id="UnaryTests_16666pq">
+          <text>starts with(cellInput, "9909")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0od9o3v">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0dmg0of">
+        <inputEntry id="UnaryTests_18uh608">
+          <text>not(starts with(cellInput, "9909"))</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1kehhtm">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNEdge id="DMNEdge_1h0p99g" dmnElementRef="InformationRequirement_0ltu2ms">
+        <di:waypoint x="290" y="130" />
+        <di:waypoint x="556" y="350" />
+        <di:waypoint x="556" y="370" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0k6biui" dmnElementRef="Decision_Type">
+        <dc:Bounds height="80" width="180" x="200" y="50" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1hcrgz6" dmnElementRef="Decision_Region">
+        <dc:Bounds height="80" width="180" x="440" y="50" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0owkyxf" dmnElementRef="Decision_Result">
+        <dc:Bounds height="80" width="180" x="520" y="370" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_19cmr7l" dmnElementRef="InformationRequirement_1wk1zog">
+        <di:waypoint x="530" y="130" />
+        <di:waypoint x="592" y="350" />
+        <di:waypoint x="592" y="370" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0g45dvx" dmnElementRef="Decision_Capital">
+        <dc:Bounds height="80" width="180" x="670" y="50" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_18s2u3q" dmnElementRef="InformationRequirement_0lndadg">
+        <di:waypoint x="760" y="130" />
+        <di:waypoint x="628" y="350" />
+        <di:waypoint x="628" y="370" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1qa6n9k" dmnElementRef="InformationRequirement_1ktzyfn">
+        <di:waypoint x="990" y="130" />
+        <di:waypoint x="664" y="350" />
+        <di:waypoint x="664" y="370" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0y05x82" dmnElementRef="Decision_Resident">
+        <dc:Bounds height="80" width="180" x="900" y="50" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
